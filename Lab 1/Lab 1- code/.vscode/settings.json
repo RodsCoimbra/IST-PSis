@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/rods/Desktop/PSis/PSis - Week 1 - Lab 1/Lab 1- code",
+            "binaryPath": "/home/rods/Desktop/PSis/PSis - Week 1 - Lab 1/Lab 1- code/lab1",
+            "binaryArgs": []
+        }
+    ]
+}
