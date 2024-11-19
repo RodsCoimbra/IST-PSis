@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include "funcs-ex5.h"
 
 int create_FIFO_read()
 {
@@ -48,16 +50,32 @@ int main()
 {
     int fd_write = create_FIFO_write();
     int fd_read = create_FIFO_read();
-    char str[20];
-    int n;
-    char result[100];
+    char func[20], str[20], result[100];
+    int n, arg;
     while (1)
     {
-        printf("write a function:");
-        fgets(str, 20, stdin);
-        write(fd_write, str, 20);
-        
+        printf("Write a function:");
+        fgets(func, 20, stdin);
 
+        printf("Write which type of function you want to execute (0 - No args; 1 - An integer arg;):");
+        fgets(str, 20, stdin);
+        sscanf(str, " %d", &n);
+        
+        if (n == 1)
+        {
+            
+            printf("Write an integer:");
+            fgets(str, 20, stdin);
+            sscanf(str, "%d", &arg);
+        }
+        
+        message_type msg;
+        msg.funct_type = n;
+        strcpy(msg.f_name, func);
+        msg.arg = arg;
+
+        write(fd_write, &msg, sizeof(msg));
+        
         n = read(fd_read, result, 100);
 		if(n<=0){
 			perror("read ");

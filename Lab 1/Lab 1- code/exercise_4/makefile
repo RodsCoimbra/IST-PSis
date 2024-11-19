@@ -1,5 +1,9 @@
+run: main
+	./main
+
 main: main.o lib1.so lib2.so lib.h
 	gcc -o main main.o -ldl
+
 main.o: main.c
 	gcc -Wall -c main.c
 
@@ -10,8 +14,7 @@ lib2.so: lib2.c
 	gcc lib2.c -o lib2.so -ldl -shared -fPIC
 
 clean:
-	rm main *.so
+	rm main main.o *.so
 
-run:
-	./main
+
 
