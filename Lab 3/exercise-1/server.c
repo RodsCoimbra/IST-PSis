@@ -51,13 +51,13 @@ void receive_message(int fd, msg_fifo *m)
     }
 }
 
-char_info* search_player(char_info players[], int n_players, char character)
+int search_player(char_info players[], int n_players, char character)
 {
     for (int i = 0; i < n_players; i++)
     {
         if (players[i].character == character)
         {
-            return &players[i];
+            return i;
         }
     }
     endwin();
@@ -89,7 +89,8 @@ int main()
 
     direction_t direction;
     msg_fifo m;
-    char_info* data_player;
+    char_info data_player;
+    int player_num;
     while (1)
     {
         // TODO_7
@@ -99,10 +100,10 @@ int main()
         //  process connection messages
         if (m.msg_type == CONNECTION)
         {
-            data_player = &players[n_players];
-            (*data_player).character = m.character;
-            (*data_player).x = WINDOW_SIZE / 2;
-            (*data_player).y = WINDOW_SIZE / 2;
+            data_player.character = m.character;
+            data_player.x = WINDOW_SIZE / 2;
+            data_player.y = WINDOW_SIZE / 2;
+            players[n_players] = data_player;
             n_players++;
         }
 
@@ -110,16 +111,18 @@ int main()
         // process the movement message
         else if(m.msg_type == MOVEMENT)
         {
-            data_player = search_player(players, n_players, m.character);
+            player_num = search_player(players, n_players, m.character);
             direction = m.direction;
-            wmove(my_win, (*data_player).x, (*data_player).y);
+            data_player = players[player_num];
+            wmove(my_win, data_player.x, data_player.y);
             waddch(my_win, ' ');
-            new_position(&(*data_player).x, &((*data_player).y), direction);
+            new_position(&data_player.x, &data_player.y, direction);
+            players[player_num] = data_player;
         }
         
         /* draw mark on new position */
-        wmove(my_win, (*data_player).x, (*data_player).y);
-        waddch(my_win, (*data_player).character | A_BOLD);
+        wmove(my_win, data_player.x, data_player.y);
+        waddch(my_win, data_player.character | A_BOLD);
         wrefresh(my_win);
     }
     endwin(); /* End curses mode		  */
