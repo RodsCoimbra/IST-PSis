@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/rods/Desktop/IST-PSis/Lab 1/Lab 1- code/exercise_3",
+            "binaryPath": "/home/rods/Desktop/IST-PSis/Lab 1/Lab 1- code/exercise_3/prog1",
+            "binaryArgs": []
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "funcs-ex5.h": "c",
+        "stdio.h": "c",
+        "fcntl.h": "c",
+        "stat.h": "c",
+        "unistd.h": "c",
+        "sstream": "c"
+    },
+    "makefile.makefilePath": "/home/rods/Desktop/IST-PSis/Lab 3/exercise-1/makefile"
+}
