@@ -1,0 +1,15 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/rods/Desktop/IST-PSis/Lab 4/code/PA System/server",
+            "binaryPath": "/home/rods/Desktop/IST-PSis/Lab 4/code/PA System/server/pa_server",
+            "binaryArgs": []
+        }
+    ],
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
+}

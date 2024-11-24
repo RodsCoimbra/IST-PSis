@@ -5,7 +5,15 @@
         "fcntl.h": "c",
         "stat.h": "c",
         "unistd.h": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "string": "c",
+        "zhelpers.h": "c"
     },
-    "makefile.makefilePath": "/home/rods/Desktop/IST-PSis/Lab 3/exercise-1/makefile"
+    "makefile.makefilePath": "/home/rods/Desktop/IST-PSis/Lab 3/exercise-1/makefile",
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
 }
