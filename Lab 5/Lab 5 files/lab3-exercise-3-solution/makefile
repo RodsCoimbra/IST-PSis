@@ -7,7 +7,7 @@ server: server-exercise-3.c
 	gcc server-exercise-3.c -o server -lzmq -lncurses
 
 display-client: remote-display-client.c
-	gcc -g remote-display-client.c -o display-client -lzmq -lncurses
+	gcc remote-display-client.c -o display-client -lzmq -lncurses
 
 clean:
 	rm player server display-client

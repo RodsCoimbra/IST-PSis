@@ -4,6 +4,11 @@
             "cwd": "/home/rods/Desktop/IST-PSis/Lab 5/Lab 5 files/lab3-exercise-3-solution",
             "binaryPath": "/home/rods/Desktop/IST-PSis/Lab 5/Lab 5 files/lab3-exercise-3-solution/display-client",
             "binaryArgs": []
+        },
+        {
+            "cwd": "/home/rods/Desktop/IST-PSis/Lab 5/Lab 5 files/lab3-exercise-3-solution",
+            "binaryPath": "/home/rods/Desktop/IST-PSis/Lab 5/Lab 5 files/lab3-exercise-3-solution/server",
+            "binaryArgs": []
         }
     ]
 }
