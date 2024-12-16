@@ -7,7 +7,8 @@
         "unistd.h": "c",
         "sstream": "c",
         "string": "c",
-        "zhelpers.h": "c"
+        "zhelpers.h": "c",
+        "balls.pb-c.h": "c"
     },
     "makefile.makefilePath": "/home/rods/Desktop/IST-PSis/Lab 5/Lab 5 files/lab3-exercise-3-solution",
     "python.autoComplete.extraPaths": [
