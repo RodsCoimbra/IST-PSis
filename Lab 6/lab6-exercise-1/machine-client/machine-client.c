@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <ctype.h>
+#include "../balls.pb-c.h"
 
 #include <zmq.h>
 #include "zhelpers.h"
@@ -37,9 +38,13 @@ int main(){
 
     // TODO 7 - create and fill a message of type  client_connection_req 
     //           and send the packed message to the server 
-    remote_char_t m; 
-    m.ch = ch;
-    zmq_send (requester, &m, sizeof(remote_char_t), 0);
+    ClientConnectionReq ccr = CLIENT_CONNECTION_REQ__INIT;
+    ccr.client_id = &ch;
+    int msg_len = client_connection_req__get_packed_size(&ccr);
+    char * msg_buf = malloc(msg_len);
+    client_connection_req__pack(&ccr, msg_buf);
+    zmq_send (requester, msg_buf, msg_len, 0);
+    free(msg_buf);
     // TODO 7
 
     char * str = s_recv(requester);
@@ -49,6 +54,9 @@ int main(){
     int sleep_delay;
     direction_t direction;
     int n = 0;
+    MovementReq mov_msg = MOVEMENT_REQ__INIT;
+    mov_msg.client_id = &ch;
+    
     while (1)
     {
         n++;
@@ -76,9 +84,12 @@ int main(){
 
         // TODO 10 - create and fill a message of type  movement_req  
         //           and send the packed message to the server
-        m.direction = direction;
-        m.msg_type = 1;
-        zmq_send (requester, &m, sizeof(remote_char_t), 0);
+        mov_msg.direction = direction;
+        int msg_len = movement_req__get_packed_size(&mov_msg);
+        char * msg_buf = malloc(msg_len);
+        movement_req__pack(&mov_msg, msg_buf);
+        zmq_send (requester, msg_buf, msg_len, 0);
+        free(msg_buf);
         // TODO 10
 
         char * str = s_recv(requester);

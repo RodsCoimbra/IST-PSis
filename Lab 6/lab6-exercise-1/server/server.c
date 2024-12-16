@@ -91,7 +91,6 @@ int main()
     int n_chars = 0;
 
     int fd;
-    remote_char_t m;
 
     void *context = zmq_ctx_new();
     void *responder = zmq_socket(context, ZMQ_REP);
@@ -127,6 +126,10 @@ int main()
     int pos_y;
     zmq_msg_t msg;
     zmq_msg_init(&msg);
+    PayperviewReq* pay_msg;
+    PayperviewResp rep_m = PAYPERVIEW_RESP__INIT;
+    ClientConnectionReq* ccr;
+    MovementReq* movement;
 
     direction_t direction;
     while (1)
@@ -142,25 +145,31 @@ int main()
             //          replace the zmq_recv by a zmq_recvmsg
             //          get the message buffer with zmq_msg_data
             //          get the C message structure with the payperview_req__unpack
+            
+            int msg_len = zmq_recvmsg(responder, &msg, 0);
+            void *msg_data = zmq_msg_data(&msg);
+            pay_msg = payperview_req__unpack(NULL, msg_len,msg_data);
             // TODO 3
 
-            int msg_len = zmq_recvmsg(responder, &msg, 0);
-            void *buf = zmq_msg_data(&msg);
-            remote_char_t *m = payperview_req__unpack(NULL, zmq_msg_size(&msg), zmq_msg_data(&msg));
-            printf("client_name %s\n", m->subscriber_name);
 
             // TODO 4 –  send the reply as a protocol buffer payperview_resp message
-            subscrition_ok_m rep_m;
-            rep_m.random_secret = random_secret;
-            zmq_send(responder, &rep_m, sizeof(rep_m), 0);
+            
+            rep_m.code = random_secret;
+            int msg_len_resp = payperview_resp__get_packed_size(&rep_m);
+            char *msg_buf_resp = malloc(msg_len_resp);
+            payperview_resp__pack(&rep_m, msg_buf_resp);
+            zmq_send(responder, msg_buf_resp, msg_len_resp, 0);
+            free(msg_buf_resp);
             // TODO 4
             continue;
         }
         if (msg_type == 0)
         {
             // TODO 8 - read and process the client_connection_req message
-            zmq_recv(responder, &m, sizeof(remote_char_t), 0);
-            ch = m.ch;
+            int msg_len = zmq_recvmsg(responder, &msg, 0);
+            void *msg_data = zmq_msg_data(&msg);
+            ccr = client_connection_req__unpack(NULL, msg_len,msg_data);
+            ch = ccr->client_id[0];
             // TODO 8
 
             pos_x = WINDOW_SIZE / 2;
@@ -175,10 +184,13 @@ int main()
         if (msg_type == 1)
         {
             // TODO 11 - read and process the movement_req message
-            zmq_recv(responder, &m, sizeof(remote_char_t), 0);
+            int msg_len = zmq_recvmsg(responder, &msg, 0);
+            void *msg_data = zmq_msg_data(&msg);
+            movement = movement_req__unpack(NULL, msg_len,msg_data);
+            
             // TODO 11
 
-            int ch_pos = find_ch_info(char_data, n_chars, m.ch);
+            int ch_pos = find_ch_info(char_data, n_chars, movement->client_id[0]);
             if (ch_pos != -1)
             {
                 pos_x = char_data[ch_pos].pos_x;
@@ -189,7 +201,7 @@ int main()
                 waddch(my_win, ' ');
                 zmq_send_BallDrawDisplayMsg(publisher, ' ', pos_x, pos_y, random_secret);
                 /* claculates new direction */
-                direction = m.direction;
+                direction = movement->direction;
 
                 /* claculates new mark position */
                 new_position(&pos_x, &pos_y, direction);

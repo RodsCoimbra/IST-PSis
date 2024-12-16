@@ -4,18 +4,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>  
- #include <ctype.h> 
- #include <stdlib.h>
+#include <ctype.h> 
+#include <stdlib.h>
+#include "../balls.pb-c.h"
  
 #include <zmq.h>
 #include "zhelpers.h"
 
 int main()
 {
-
-
-
-
     void *context = zmq_ctx_new ();
     void *requester = zmq_socket (context, ZMQ_REQ);
     int rc = zmq_connect (requester, "tcp://localhost:55555");
@@ -39,9 +36,13 @@ int main()
 
     // TODO 7 - create and fill a message of type client_connection_req   
     //           and send the packed message to the server
-    remote_char_t m;
-    m.ch = ch;
-    zmq_send (requester, &m, sizeof(remote_char_t), 0);
+    ClientConnectionReq ccr = CLIENT_CONNECTION_REQ__INIT;
+    ccr.client_id = &ch;
+    int msg_len = client_connection_req__get_packed_size(&ccr);
+    char * msg_buf = malloc(msg_len);
+    client_connection_req__pack(&ccr, msg_buf);
+    zmq_send (requester, msg_buf, msg_len, 0);
+    free(msg_buf);
     // TODO 7
 
     char * str = s_recv(requester);
@@ -55,7 +56,8 @@ int main()
 
     int n = 0;
 
-    m.ch = ch;
+    MovementReq mov_msg = MOVEMENT_REQ__INIT;
+    mov_msg.client_id = &ch;
     
     int key;
     do
@@ -66,19 +68,19 @@ int main()
         {
         case KEY_LEFT:
             mvprintw(0,0,"%d Left arrow is pressed", n);
-           m.direction = LEFT;
+            mov_msg.direction = LEFT;
             break;
         case KEY_RIGHT:
             mvprintw(0,0,"%d Right arrow is pressed", n);
-            m.direction = RIGHT;
+            mov_msg.direction = RIGHT;
             break;
         case KEY_DOWN:
             mvprintw(0,0,"%d Down arrow is pressed", n);
-           m.direction = DOWN;
+            mov_msg.direction = DOWN;
             break;
         case KEY_UP:
             mvprintw(0,0,"%d :Up arrow is pressed", n);
-            m.direction = UP;
+            mov_msg.direction = UP;
             break;
 
         default:
@@ -92,7 +94,11 @@ int main()
 
             // TODO 10 - create and fill a message of type  movement_req  
             //           and send the packed message to the server
-            zmq_send (requester, &m, sizeof(remote_char_t), 0);
+            int msg_len = movement_req__get_packed_size(&mov_msg);
+            char * msg_buf = malloc(msg_len);
+            movement_req__pack(&mov_msg, msg_buf);
+            zmq_send(requester, msg_buf, msg_len, 0);
+            free(msg_buf);
             // TODO 10
 
 

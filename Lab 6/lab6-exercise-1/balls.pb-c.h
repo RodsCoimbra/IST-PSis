@@ -18,6 +18,8 @@ PROTOBUF_C__BEGIN_DECLS
 typedef struct _BallDrawDisplayMsg BallDrawDisplayMsg;
 typedef struct _PayperviewReq PayperviewReq;
 typedef struct _PayperviewResp PayperviewResp;
+typedef struct _ClientConnectionReq ClientConnectionReq;
+typedef struct _MovementReq MovementReq;
 
 
 /* --- enums --- */
@@ -55,11 +57,32 @@ struct  _PayperviewReq
 struct  _PayperviewResp
 {
   ProtobufCMessage base;
-  char *code;
+  int32_t code;
 };
 #define PAYPERVIEW_RESP__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&payperview_resp__descriptor) \
+    , 0 }
+
+
+struct  _ClientConnectionReq
+{
+  ProtobufCMessage base;
+  char *client_id;
+};
+#define CLIENT_CONNECTION_REQ__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&client_connection_req__descriptor) \
     , NULL }
+
+
+struct  _MovementReq
+{
+  ProtobufCMessage base;
+  char *client_id;
+  uint32_t direction;
+};
+#define MOVEMENT_REQ__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&movement_req__descriptor) \
+    , NULL, 0 }
 
 
 /* BallDrawDisplayMsg methods */
@@ -119,6 +142,44 @@ PayperviewResp *
 void   payperview_resp__free_unpacked
                      (PayperviewResp *message,
                       ProtobufCAllocator *allocator);
+/* ClientConnectionReq methods */
+void   client_connection_req__init
+                     (ClientConnectionReq         *message);
+size_t client_connection_req__get_packed_size
+                     (const ClientConnectionReq   *message);
+size_t client_connection_req__pack
+                     (const ClientConnectionReq   *message,
+                      uint8_t             *out);
+size_t client_connection_req__pack_to_buffer
+                     (const ClientConnectionReq   *message,
+                      ProtobufCBuffer     *buffer);
+ClientConnectionReq *
+       client_connection_req__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   client_connection_req__free_unpacked
+                     (ClientConnectionReq *message,
+                      ProtobufCAllocator *allocator);
+/* MovementReq methods */
+void   movement_req__init
+                     (MovementReq         *message);
+size_t movement_req__get_packed_size
+                     (const MovementReq   *message);
+size_t movement_req__pack
+                     (const MovementReq   *message,
+                      uint8_t             *out);
+size_t movement_req__pack_to_buffer
+                     (const MovementReq   *message,
+                      ProtobufCBuffer     *buffer);
+MovementReq *
+       movement_req__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   movement_req__free_unpacked
+                     (MovementReq *message,
+                      ProtobufCAllocator *allocator);
 /* --- per-message closures --- */
 
 typedef void (*BallDrawDisplayMsg_Closure)
@@ -130,6 +191,12 @@ typedef void (*PayperviewReq_Closure)
 typedef void (*PayperviewResp_Closure)
                  (const PayperviewResp *message,
                   void *closure_data);
+typedef void (*ClientConnectionReq_Closure)
+                 (const ClientConnectionReq *message,
+                  void *closure_data);
+typedef void (*MovementReq_Closure)
+                 (const MovementReq *message,
+                  void *closure_data);
 
 /* --- services --- */
 
@@ -139,6 +206,8 @@ typedef void (*PayperviewResp_Closure)
 extern const ProtobufCMessageDescriptor ball_draw_display_msg__descriptor;
 extern const ProtobufCMessageDescriptor payperview_req__descriptor;
 extern const ProtobufCMessageDescriptor payperview_resp__descriptor;
+extern const ProtobufCMessageDescriptor client_connection_req__descriptor;
+extern const ProtobufCMessageDescriptor movement_req__descriptor;
 
 PROTOBUF_C__END_DECLS
 

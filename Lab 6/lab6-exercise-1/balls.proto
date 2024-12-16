@@ -18,12 +18,21 @@ message payperview_req {
 // TODO 1 - define a message (payperview_resp) with the 
 //         secret to the remote-display-client
 message payperview_resp {
-  required string code = 1;
+  required int32 code = 1;
 }
 
 
 // TODO 6 - define the client_connection_req message
 //          that will serialize initial client message
 
+message client_connection_req {
+  required string client_id = 1;
+}
+
 // TODO 9 - define the movement_req message 
 //          that will serialize the movements of balls
+
+message movement_req {
+  required string client_id = 1;
+  required uint32 direction = 2;
+}
