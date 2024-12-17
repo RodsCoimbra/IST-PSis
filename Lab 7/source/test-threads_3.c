@@ -23,14 +23,12 @@ int main(){
     fgets(line, 100, stdin);
     sscanf(line, "%d", &n_threads);
     pthread_t *threads = (pthread_t *)malloc(n_threads * sizeof(pthread_t));
-
-    int i = 0;
     void * value;
+
     for (int i = 0; i < n_threads; i++) {
         pthread_t thread_id;
-        threads[i] = thread_id;
-        printf("Creating thread %lu, id = %d\n", thread_id, i);
         pthread_create(&thread_id, NULL,thread_function, &i);
+        threads[i] = thread_id;
     }
 
     for (int i = 0; i < n_threads; i++) {

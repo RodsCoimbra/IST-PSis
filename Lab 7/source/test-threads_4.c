@@ -7,12 +7,14 @@ int n = 0;
 void * thread_function(void * arg){
     long int r = random()%100;
     printf("Start Thread %lu\n", r);
-    while(n <10){
+    int i = 0;
+    while(i <10){
         sleep(1);
+        i++;
         n++;
         printf("inside Thread %lu %d\n", r, n);
     }
-    printf("End Thread %lu\n", r);
+    printf("End Thread %lu -> %d\n", r, n);
     return (void *)r;
 }
 
@@ -29,7 +31,9 @@ int main(){
         pthread_create(&thread_id, NULL,thread_function, NULL);
         i++;
     };
+    
     printf("Carregue em enter para terminar\n");
     fgets(line, 100, stdin);
+    printf("n = %d\n", n);
     exit(0);
 }
